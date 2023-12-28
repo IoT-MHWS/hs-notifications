@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -26,19 +27,14 @@ public class EmailSender {
     private String text;
 
     @KafkaListener(topics = "email", groupId = "notifications")
-    public void sendSimpleMessage(EmailDTO emailDTO) throws JsonProcessingException {
+    public void sendSimpleMessage(EmailDTO emailDTO) throws MailSendException, JsonProcessingException {
         SimpleMailMessage message = new SimpleMailMessage();
         String email = extractMailFromMessageDTO(emailDTO);
         message.setFrom(sender);
         message.setTo(email);
         message.setSubject(subject);
         message.setText(text);
-        try {
-            emailSender.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
+        emailSender.send(message);
     }
 
     private String extractMailFromMessageDTO(EmailDTO emailDTO) throws JsonProcessingException {

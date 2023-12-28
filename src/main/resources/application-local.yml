@@ -8,7 +8,7 @@ eureka:
 
 art-mail:
   mail-subject: ArtGallery Notification
-  mail-text: You have registered successfully
+  mail-text: An account has been registered for this email address in the ArtGallery service
 
 spring:
   mail:
