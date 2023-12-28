@@ -29,17 +29,10 @@ public class EmailSender {
     @KafkaListener(topics = "email", groupId = "notifications")
     public void sendSimpleMessage(EmailDTO emailDTO) throws MailSendException, JsonProcessingException {
         SimpleMailMessage message = new SimpleMailMessage();
-        String email = extractMailFromMessageDTO(emailDTO);
         message.setFrom(sender);
-        message.setTo(email);
+        message.setTo(emailDTO.getEmail());
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);
-    }
-
-    private String extractMailFromMessageDTO(EmailDTO emailDTO) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(emailDTO.getEmail());
-        return jsonNode.get("email").asText();
     }
 }
