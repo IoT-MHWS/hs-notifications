@@ -1,4 +1,4 @@
-package artgallery.hsnotifications.mail;
+package artgallery.hsnotifications.email;
 
 import artgallery.hsnotifications.model.EmailDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,22 +17,22 @@ public class EmailSender {
     private final JavaMailSender emailSender;
 
     @Value("${spring.mail.username}")
-    private String senderMail;
+    private String sender;
 
     @Value("${art-mail.mail-subject}")
-    private String subjectMail;
+    private String subject;
 
     @Value("${art-mail.mail-text}")
-    private String textMail;
+    private String text;
 
     @KafkaListener(topics = "email", groupId = "notifications")
     public void sendSimpleMessage(EmailDTO emailDTO) throws JsonProcessingException {
         SimpleMailMessage message = new SimpleMailMessage();
-        String mail = extractMailFromMessageDTO(emailDTO);
-        message.setFrom(senderMail);
-        message.setTo(mail);
-        message.setSubject(subjectMail);
-        message.setText(textMail);
+        String email = extractMailFromMessageDTO(emailDTO);
+        message.setFrom(sender);
+        message.setTo(email);
+        message.setSubject(subject);
+        message.setText(text);
         try {
             emailSender.send(message);
         } catch (Exception e) {
