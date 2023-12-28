@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
-    @JsonProperty("mail")
-    private String mail;
+public class EmailDTO {
+    @JsonProperty("email")
+    private String email;
 }
