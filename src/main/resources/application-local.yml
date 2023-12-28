@@ -4,23 +4,20 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: ${HS_BOX_OFFICE_EUREKA_URI:http://localhost:8761/eureka}
+      defaultZone: ${HS_NOTIFICATIONS_EUREKA_URI:http://localhost:8761/eureka}
 
 art-mail:
-  mail-sender: artgalleryservice@mail.ru
   mail-subject: ArtGallery Notification
   mail-text: You have registered successfully
-  password: ${HS_MAIL_PASSWORD}
 
 spring:
   mail:
     host: smtp.mail.ru
     port: 587
     username: artgalleryservice@mail.ru
-    password: ${HS_MAIL_PASSWORD}
+    password: ${HS_NOTIFICATIONS_MAIL_PASSWORD}
   kafka:
-    bootstrap-servers: ${KAFKA_URI:http://localhost:9092}
+    bootstrap-servers: ${HS_NOTIFICATIONS_KAFKA_URI:http://localhost:9092}
     consumer:
-      group-id: artgallery
       max-poll-records: 100
       auto-offset-reset: earliest
