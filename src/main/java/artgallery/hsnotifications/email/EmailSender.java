@@ -2,7 +2,6 @@ package artgallery.hsnotifications.email;
 
 import artgallery.hsnotifications.model.EmailDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EmailSender {
     private final JavaMailSender emailSender;
+    static private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${spring.mail.username}")
     private String sender;
@@ -23,23 +23,16 @@ public class EmailSender {
     @Value("${art-mail.mail-subject}")
     private String subject;
 
-    @Value("${art-mail.mail-text}")
-    private String text;
-
     @KafkaListener(topics = "email", groupId = "notifications")
-    public void sendSimpleMessage(EmailDTO emailDTO) throws MailSendException, JsonProcessingException {
+    public void sendSimpleMessage(String msg) throws MailSendException, JsonProcessingException {
         SimpleMailMessage message = new SimpleMailMessage();
-        String email = extractMailFromMessageDTO(emailDTO);
+        EmailDTO email = objectMapper.readValue(msg, EmailDTO.class);
         message.setFrom(sender);
-        message.setTo(email);
+        message.setTo(email.getEmail());
         message.setSubject(subject);
-        message.setText(text);
+        message.setText(String.format(
+                "An account has been registered for email address %s in the ArtGallery service. You can login using username: %s",
+                email.getEmail(), email.getLogin()));
         emailSender.send(message);
-    }
-
-    private String extractMailFromMessageDTO(EmailDTO emailDTO) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(emailDTO.getEmail());
-        return jsonNode.get("email").asText();
     }
 }

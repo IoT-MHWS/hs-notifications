@@ -13,4 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class EmailDTO {
     @JsonProperty("email")
     private String email;
+    @JsonProperty("login")
+    private String login;
 }
