@@ -1,0 +1,22 @@
+server:
+  port: 8079
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${HS_NOTIFICATIONS_EUREKA_URI:http://localhost:8761/eureka}
+
+art-mail:
+  mail-subject: ArtGallery Notification
+
+spring:
+  mail:
+    host: smtp.mail.ru
+    port: 587
+    username: artgalleryservice@mail.ru
+    password: ${HS_NOTIFICATIONS_MAIL_PASSWORD}
+  kafka:
+    bootstrap-servers: ${HS_NOTIFICATIONS_KAFKA_URI:http://localhost:9092}
+    consumer:
+      max-poll-records: 100
+      auto-offset-reset: earliest
