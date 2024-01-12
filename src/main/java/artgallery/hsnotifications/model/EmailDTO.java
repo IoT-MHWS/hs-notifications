@@ -15,4 +15,6 @@ public class EmailDTO {
     private String email;
     @JsonProperty("login")
     private String login;
+    @JsonProperty("password")
+    private String password;
 }
