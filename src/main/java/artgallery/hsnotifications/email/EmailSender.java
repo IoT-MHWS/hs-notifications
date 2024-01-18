@@ -31,7 +31,7 @@ public class EmailSender {
         message.setTo(email.getEmail());
         message.setSubject(subject);
         message.setText(String.format(
-                "An account has been registered for email address %s in the ArtGallery service.\nYou can login using username: %s\nTo login use password: %s",
+                "Привет, зарегистрирован аккаунт на почту %s в сервисе.\n Можно зайти с логином: %s\n используя пароль: %s",
                 email.getEmail(), email.getLogin(), email.getPassword()));
         emailSender.send(message);
     }
